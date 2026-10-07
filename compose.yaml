@@ -1,7 +1,6 @@
 services:
   db:
-    build: ./db
-    image: wordsmith-db:small
+    image: yuzaki0723/wordsmith:db
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
@@ -11,18 +10,14 @@ services:
       retries: 30
 
   words:
-    build: ./words
-    image: wordsmith-words:small
+    image: yuzaki0723/wordsmith:words
     depends_on:
       db:
         condition: service_healthy
 
   web:
-    build: ./web
-    image: wordsmith-web:small
+    image: yuzaki0723/wordsmith:web
     ports:
-      - "${WEB_PORT:-8080}:80"
-    volumes:
-      - ./web/static:/app/static:ro
+      - "${WEB_PORT:-8084}:80"
     depends_on:
       - words
